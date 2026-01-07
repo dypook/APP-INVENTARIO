@@ -1,0 +1,20 @@
+{
+  "name": "Inventario Pro V14",
+  "short_name": "Inventario",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#008080",
+  "theme_color": "#000080",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/1069/1069102.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/1069/1069102.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
