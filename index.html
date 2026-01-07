@@ -3,145 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Inventarios V13</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Inventarios">
+    
+    <title>Inventarios V14 (PWA)</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     
     <style>
-        /* --- TEMA STANDARD --- */
-        :root {
-            --bg: #008080; --win-gray: #c0c0c0; --text: #000;
-            --light: #fff; --shadow: #808080; --blue: #000080;
-            --input-bg: #fff; --verif-bg: #e0ffe0; --pend-bg: #e0e0e0;
-            --header-text: #fff;
-        }
-
-        /* --- TEMA OLED --- */
-        body.oled-mode {
-            --bg: #000000; --win-gray: #000000; --text: #ffffff;
-            --light: #ffffff; --shadow: #ffffff; --blue: #000000;
-            --input-bg: #000000; --verif-bg: #002200; --pend-bg: #222222;
-            --header-text: #fff;
-        }
-        
-        body.oled-mode input, body.oled-mode select, body.oled-mode textarea {
-            color: #fff; border: 1px solid #fff; background: #000;
-        }
+        /* TEMA STANDARD */
+        :root { --bg: #008080; --win-gray: #c0c0c0; --text: #000; --light: #fff; --shadow: #808080; --blue: #000080; --input-bg: #fff; --verif-bg: #e0ffe0; --pend-bg: #e0e0e0; --header-text: #fff; }
+        /* TEMA OLED */
+        body.oled-mode { --bg: #000000; --win-gray: #000000; --text: #ffffff; --light: #ffffff; --shadow: #ffffff; --blue: #000000; --input-bg: #000000; --verif-bg: #002200; --pend-bg: #222222; --header-text: #fff; }
+        body.oled-mode input, body.oled-mode select, body.oled-mode textarea { color: #fff; border: 1px solid #fff; background: #000; }
         body.oled-mode .win-box { border: 1px solid #fff; }
         body.oled-mode button { background: #000; color: #fff; border: 1px solid #fff; }
         body.oled-mode .section-header { background: #000 !important; color: #fff !important; border-bottom: 1px solid #fff; }
         body.oled-mode .header-bar { border-bottom: 1px solid #fff; }
         body.oled-mode .tab.active { border-bottom: 2px solid #000; }
 
-        /* --- LAYOUT --- */
-        body {
-            background-color: var(--bg); font-family: "Segoe UI", Tahoma, sans-serif;
-            margin: 0; padding: 5px; height: 100vh; display: flex; flex-direction: column;
-            box-sizing: border-box; font-size: 13px; color: var(--text); overflow: hidden;
-        }
-
-        .win-box {
-            background-color: var(--win-gray);
-            border: 2px solid; border-color: var(--light) var(--shadow) var(--shadow) var(--light);
-            padding: 4px; margin-bottom: 8px;
-        }
-
-        .app-title {
-            text-align: center; font-weight: 900; font-size: 1.2em;
-            text-transform: uppercase; margin-bottom: 5px; color: white;
-            text-shadow: 1px 1px 0 #000; letter-spacing: 1px;
-        }
-
-        .header-bar {
-            background: var(--blue); color: var(--header-text); padding: 5px;
-            font-weight: bold; display: flex; justify-content: space-between; align-items: center;
-        }
-
-        .section-header {
-            background: var(--shadow); color: white; padding: 2px 5px; font-weight: bold; margin-bottom: 4px;
-        }
-
+        body { background-color: var(--bg); font-family: "Segoe UI", sans-serif; margin: 0; padding: 5px; height: 100vh; display: flex; flex-direction: column; box-sizing: border-box; font-size: 13px; color: var(--text); overflow: hidden; user-select: none; -webkit-user-select: none; }
+        .win-box { background-color: var(--win-gray); border: 2px solid; border-color: var(--light) var(--shadow) var(--shadow) var(--light); padding: 4px; margin-bottom: 8px; }
+        .app-title { text-align: center; font-weight: 900; font-size: 1.2em; text-transform: uppercase; margin-bottom: 5px; color: white; text-shadow: 1px 1px 0 #000; letter-spacing: 1px; }
+        .header-bar { background: var(--blue); color: var(--header-text); padding: 5px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
+        .section-header { background: var(--shadow); color: white; padding: 2px 5px; font-weight: bold; margin-bottom: 4px; }
         .row { display: flex; gap: 5px; margin-bottom: 5px; }
         .col { flex: 1; display: flex; flex-direction: column; }
-        
-        input, select, textarea {
-            border: 2px inset var(--shadow); background: var(--input-bg);
-            padding: 5px; box-sizing: border-box; font-family: inherit; border-radius: 0; width: 100%;
-        }
-
-        button {
-            background: var(--win-gray); border: 2px outset var(--light);
-            padding: 5px 10px; font-weight: bold; cursor: pointer; display: flex;
-            align-items: center; justify-content: center; gap: 5px; text-transform: uppercase; font-size: 12px;
-        }
+        input, select, textarea { border: 2px inset var(--shadow); background: var(--input-bg); padding: 5px; box-sizing: border-box; font-family: inherit; border-radius: 0; width: 100%; user-select: text; -webkit-user-select: text; }
+        button { background: var(--win-gray); border: 2px outset var(--light); padding: 5px 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; text-transform: uppercase; font-size: 12px; }
         button:active { border-style: inset; padding: 6px 9px 4px 11px; }
         .btn-big { width: 100%; padding: 12px; margin-top: 5px; font-size: 14px; }
         .btn-top { font-size: 11px; padding: 3px 8px; background: #ddd; color: black; border: 1px solid white; }
-
         .excel-layout { display: grid; gap: 10px; }
         @media (min-width: 600px) { .excel-layout { grid-template-columns: 2fr 1fr; } }
         .left-col { display: flex; flex-direction: column; gap: 6px; }
         .right-col { display: flex; gap: 5px; justify-content: flex-end; align-items: flex-start; }
-
         label { font-weight: bold; font-size: 0.8em; margin-bottom: 2px; display: block; opacity: 0.8; }
-        .input-short { width: 100% !important; max-width: 150px; } 
-        .input-mini { width: 60px !important; }
-
-        /* TABS */
+        .input-short { width: 100% !important; max-width: 150px; } .input-mini { width: 60px !important; }
         .tabs { display: flex; gap: 4px; margin-bottom: -2px; z-index: 10; padding-left: 2px; }
-        .tab {
-            background: var(--win-gray); border: 2px solid var(--light);
-            border-bottom: none; border-right-color: var(--shadow);
-            padding: 8px 15px; cursor: pointer; border-radius: 6px 6px 0 0; opacity: 0.7;
-        }
+        .tab { background: var(--win-gray); border: 2px solid var(--light); border-bottom: none; border-right-color: var(--shadow); padding: 8px 15px; cursor: pointer; border-radius: 6px 6px 0 0; opacity: 0.7; }
         .tab.active { opacity: 1; font-weight: bold; padding-bottom: 10px; z-index: 11; border-bottom: 2px solid var(--win-gray); }
-
-        .panel { display: none; flex-grow: 1; overflow-y: auto; padding: 10px; border: 2px solid var(--light); border-color: var(--light) var(--shadow) var(--shadow) var(--light); background: var(--win-gray); }
+        .panel { display: none; flex-grow: 1; overflow-y: auto; padding: 10px; border: 2px solid var(--light); border-color: var(--light) var(--shadow) var(--shadow) var(--light); background: var(--win-gray); -webkit-overflow-scrolling: touch; }
         .panel.active { display: block; }
-
-        /* OTROS */
         .storage-pill { padding: 2px 8px; border-radius: 12px; font-weight: bold; font-size: 0.85em; background: #333; color: #fff; border: 1px solid var(--light); }
         .prog-red { color: #ff5555; } .prog-yellow { color: #ffff55; } .prog-green { color: #55ff55; }
-
-        .item-row { 
-            background: var(--input-bg); border: 1px solid var(--shadow);
-            margin-bottom: 4px; display: grid; 
-            grid-template-columns: 30px 45px 1fr 30px; 
-            gap: 8px; align-items: center; padding: 5px;
-        }
+        .item-row { background: var(--input-bg); border: 1px solid var(--shadow); margin-bottom: 4px; display: grid; grid-template-columns: 30px 45px 1fr 30px; gap: 8px; align-items: center; padding: 5px; }
         .item-row.imported { border-left: 5px solid gray; background: var(--pend-bg); }
         .item-row.verified { border-left: 5px solid lime; background: var(--verif-bg); }
-
         .photo-queue { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 5px; }
         .q-thumb { width: 60px; height: 60px; border: 1px solid #000; object-fit: cover; }
-        
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; display: none; align-items: center; justify-content: center; }
         .modal-win { width: 95%; max-width: 500px; background: var(--win-gray); border: 2px outset var(--light); padding: 5px; display: flex; flex-direction: column; max-height: 90vh; }
-        
         .folder-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 15px; padding: 10px; }
         .folder-item { display: flex; flex-direction: column; align-items: center; text-align: center; cursor: pointer; padding: 10px; border: 1px dotted transparent; }
         .folder-item:hover { border: 1px dotted var(--text); background: rgba(255,255,255,0.1); }
-        
         #loading-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:3000; display:none; flex-direction:column; justify-content:center; align-items:center; color:white; }
+        #offline-badge { display:none; background:red; color:white; padding:2px 5px; font-size:10px; border-radius:4px; margin-right:5px; }
     </style>
 </head>
 <body>
-
     <div id="loading-overlay"><div style="font-size:3em;">⏳</div><div id="loading-text" style="margin-top:10px;">Procesando...</div></div>
     <datalist id="dl-marca"></datalist><datalist id="dl-modelo"></datalist><datalist id="dl-area"></datalist><datalist id="dl-sala"></datalist>
 
     <div class="app-title">INVENTARIOS</div>
-    
     <div class="win-box" style="padding: 2px;">
         <div class="header-bar">
-            <span>📦 V13</span>
+            <span style="display:flex;align-items:center;"><span id="offline-badge">OFFLINE</span> 📦 V14</span>
             <span style="display:flex; gap:5px; align-items:center;">
                 <span id="storage-monitor" class="storage-pill">...</span>
                 <span id="progress-text" style="font-weight:900;">0%</span>
                 <button onclick="toggleOLED()" title="OLED" style="padding:0 6px;">☀</button>
-                <button class="btn-top" onclick="openModal('modal-import')">📥 Importar</button>
-                <button class="btn-top" onclick="openModal('modal-export')">📦 Exportar</button>
+                <button class="btn-top" onclick="openModal('modal-import')">📥</button>
+                <button class="btn-top" onclick="openModal('modal-export')">📦</button>
             </span>
         </div>
         <div class="row" style="margin-top:6px; align-items:center;">
@@ -159,25 +94,20 @@
     </div>
 
     <div id="tab-ingreso" class="panel active">
-        <div id="edit-indicator" style="display:none; background:yellow; color:black; text-align:center; border:1px solid black; margin-bottom:10px; padding:5px;">
-            ⚠️ <b>EDITANDO</b> <button onclick="cancelEdit()" style="display:inline; padding:0 4px; margin-left:10px;">CANCELAR</button>
-        </div>
+        <div id="edit-indicator" style="display:none; background:yellow; color:black; text-align:center; border:1px solid black; margin-bottom:10px; padding:5px;">⚠️ <b>EDITANDO</b> <button onclick="cancelEdit()" style="display:inline; padding:0 4px; margin-left:10px;">CANCELAR</button></div>
         <div class="excel-layout">
             <div class="left-col">
                 <div class="row" style="align-items:flex-end;">
                     <div style="flex:2;"><label>ID / CÓDIGO:</label><input type="text" id="inp-id" class="input-short" onblur="checkDup('id', this.value)" placeholder="AF-001"></div>
                     <div style="flex:1;"><label>CANT:</label><input type="number" id="inp-cant" class="input-mini" value="1"></div>
                 </div>
-                <div id="dup-msg" style="display:none; color:red; font-weight:bold;">⚠️ ¡ID ya existe!</div>
-                <div><label>NOMBRE DEL BIEN:</label><input type="text" id="inp-nombre"></div>
+                <div id="dup-msg" style="display:none; color:red; font-weight:bold;">⚠️ ¡Duplicado!</div>
+                <div><label>NOMBRE:</label><input type="text" id="inp-nombre"></div>
                 <div><label>MARCA:</label><input type="text" id="inp-marca" list="dl-marca" autocomplete="off" placeholder="Buscar..."></div>
                 <div><label>MODELO:</label><input type="text" id="inp-modelo" list="dl-modelo" autocomplete="off"></div>
                 <div><label>SERIE:</label><input type="text" id="inp-serie" onblur="checkDup('serie', this.value)"></div>
             </div>
-            <div class="right-col">
-                <button onclick="cloneLast()">🐑 CLONAR</button>
-                <button onclick="clearForm()">🧹 LIMPIAR</button>
-            </div>
+            <div class="right-col"><button onclick="cloneLast()">🐑 CLONAR</button><button onclick="clearForm()">🧹 LIMPIAR</button></div>
         </div>
         <hr style="border:0; border-bottom:1px solid var(--shadow); margin:15px 0;">
         <div class="win-box">
@@ -188,7 +118,7 @@
             </div>
             <label>Ref. Exacta:</label><input type="text" id="inp-ref">
             <div class="row" style="margin-top:8px;">
-                <div class="col"><label>Estado Visual:</label><select id="inp-vis"><option>Bueno</option><option>Regular</option><option>Malo</option><option>Baja</option></select></div>
+                <div class="col"><label>Visual:</label><select id="inp-vis"><option>Bueno</option><option>Regular</option><option>Malo</option><option>Baja</option></select></div>
                 <div class="col"><label>Operativo:</label><select id="inp-op"><option>Operativo</option><option>Falla Menor</option><option>Inoperativo</option></select></div>
             </div>
         </div>
@@ -199,240 +129,57 @@
             <button class="btn-big" onclick="document.getElementById('cam-input').click()">➕ AGREGAR FOTOS</button>
             <div id="photo-queue" class="photo-queue"></div>
         </div>
-        <button class="btn-big" style="background:var(--blue); color:white;" onclick="saveRecord()">💾 GUARDAR</button>
-        <br><br>
+        <button class="btn-big" style="background:var(--blue); color:white;" onclick="saveRecord()">💾 GUARDAR</button><br><br>
     </div>
 
-    <div id="tab-carpetas" class="panel">
-        <div class="row" style="justify-content:space-between; align-items:center;">
-            <h3>📂 Explorador</h3>
-            <button onclick="renderFolders()" title="Refrescar Carpetas">🔄 ACTUALIZAR</button>
-        </div>
-        <div id="folder-grid" class="folder-grid"></div>
-    </div>
-
-    <div id="tab-lista" class="panel">
-        <div class="win-box">
-            <div class="row">
-                <select id="fil-area" onchange="renderList()" class="col"><option value="">[Todas Áreas]</option></select>
-                <select id="fil-est" onchange="renderList()" class="col"><option value="">[Todo Estado]</option></select>
-            </div>
-            <div class="row">
-                <select id="fil-sort" onchange="renderList()" class="col" style="font-weight:bold;">
-                    <option value="reciente">📅 Más Reciente</option>
-                    <option value="nombre">🔤 Nombre (A-Z)</option>
-                    <option value="marca">🏭 Marca (A-Z)</option>
-                    <option value="ubic">📍 Ubicación (A-Z)</option>
-                </select>
-                <button onclick="renderList()" title="Forzar Actualización" style="background:#ffdd00; color:black;">🔄</button>
-            </div>
-        </div>
-        <input type="text" id="search-box" placeholder="🔍 Buscar ID, Nombre..." onkeyup="renderList()" style="margin-bottom:5px;">
-        <div id="bulk-actions" style="display:none; background:#ffffcc; color:black; padding:5px; border:1px solid black; margin-bottom:5px;">
-            <span id="bulk-count">0 sel</span>
-            <button onclick="bulkMove()">🚚 MOVER</button>
-        </div>
-        <div id="list-container"></div>
-    </div>
-
-    <div id="modal-import" class="modal-overlay" onclick="closeModal(event)">
-        <div class="modal-win">
-            <div class="header-bar">📥 IMPORTAR EXCEL <button onclick="document.getElementById('modal-import').style.display='none'">X</button></div>
-            <div style="padding:15px;">
-                <button onclick="downloadTemplate()">📄 Descargar Plantilla .CSV</button>
-                <hr>
-                <input type="file" id="csv-input" accept=".csv">
-                <br><br>
-                <button class="btn-big" onclick="processImport()">PROCESAR</button>
-            </div>
-        </div>
-    </div>
-    <div id="modal-export" class="modal-overlay" onclick="closeModal(event)">
-        <div class="modal-win">
-            <div class="header-bar">📦 EXPORTAR <button onclick="document.getElementById('modal-export').style.display='none'">X</button></div>
-            <div id="export-content" style="padding:15px; overflow-y:auto;">
-                <button class="btn-big" onclick="analyzeExport()">🔄 CALCULAR TAMAÑO</button>
-                <div id="export-options" style="display:none; margin-top:15px;"></div>
-            </div>
-            <hr>
-            <button style="color:red; margin:5px;" onclick="nukeDB()">⚠️ BORRAR BD</button>
-        </div>
-    </div>
-    <div id="tech-sheet" class="modal-overlay" onclick="closeModal(event)">
-        <div class="modal-win">
-            <div class="header-bar">FICHA TÉCNICA <button onclick="document.getElementById('tech-sheet').style.display='none'">X</button></div>
-            <div style="background:#000; height:250px; display:flex; justify-content:center; align-items:center;">
-                <img id="modal-img" style="max-width:100%; max-height:100%;">
-                <span id="no-foto" style="color:white; display:none;">SIN FOTO</span>
-            </div>
-            <div style="display:flex; justify-content:center; gap:15px; padding:10px; background:#222;">
-                <button onclick="prevPhoto()" style="color:white; border-color:white;">◀</button>
-                <span id="photo-c" style="background:#fff; color:#000; padding:2px 10px;">0/0</span>
-                <button onclick="nextPhoto()" style="color:white; border-color:white;">▶</button>
-            </div>
-            <div id="modal-data" style="background:#fff; color:#000; padding:10px; overflow-y:auto; flex:1; font-family:monospace; border:2px inset;"></div>
-            <div class="row" style="margin-top:10px;">
-                <button class="btn-big" onclick="generateLitePDF()">🖨️ PDF (Lite)</button>
-                <button class="btn-big" onclick="editFromModal()">✏️ EDITAR</button>
-            </div>
-        </div>
-    </div>
+    <div id="tab-carpetas" class="panel"><div class="row" style="justify-content:space-between;"><h3>📂 Explorador</h3><button onclick="renderFolders()">🔄</button></div><div id="folder-grid" class="folder-grid"></div></div>
+    <div id="tab-lista" class="panel"><div class="win-box"><div class="row"><select id="fil-area" onchange="renderList()" class="col"><option value="">[Áreas]</option></select><select id="fil-est" onchange="renderList()" class="col"><option value="">[Estados]</option></select></div><div class="row"><select id="fil-sort" onchange="renderList()" class="col" style="font-weight:bold;"><option value="reciente">📅 Reciente</option><option value="nombre">🔤 Nombre</option><option value="marca">🏭 Marca</option><option value="ubic">📍 Ubicación</option></select><button onclick="renderList()">🔄</button></div></div><input type="text" id="search-box" placeholder="🔍 Buscar..." onkeyup="renderList()" style="margin-bottom:5px;"><div id="bulk-actions" style="display:none; background:#ffffcc; color:black; padding:5px; border:1px solid black; margin-bottom:5px;"><span id="bulk-count">0 sel</span><button onclick="bulkMove()">🚚 MOVER</button></div><div id="list-container"></div></div>
+    
+    <div id="modal-import" class="modal-overlay" onclick="closeModal(event)"><div class="modal-win"><div class="header-bar">📥 IMPORTAR <button onclick="document.getElementById('modal-import').style.display='none'">X</button></div><div style="padding:15px;"><button onclick="downloadTemplate()">📄 Bajar Plantilla</button><hr><input type="file" id="csv-input" accept=".csv"><br><br><button class="btn-big" onclick="processImport()">PROCESAR</button></div></div></div>
+    <div id="modal-export" class="modal-overlay" onclick="closeModal(event)"><div class="modal-win"><div class="header-bar">📦 EXPORTAR <button onclick="document.getElementById('modal-export').style.display='none'">X</button></div><div id="export-content" style="padding:15px; overflow-y:auto;"><button class="btn-big" onclick="analyzeExport()">🔄 CALCULAR</button><div id="export-options" style="display:none; margin-top:15px;"></div></div><hr><button style="color:red; margin:5px;" onclick="nukeDB()">⚠️ BORRAR BD</button></div></div>
+    <div id="tech-sheet" class="modal-overlay" onclick="closeModal(event)"><div class="modal-win"><div class="header-bar">FICHA <button onclick="document.getElementById('tech-sheet').style.display='none'">X</button></div><div style="background:#000; height:250px; display:flex; justify-content:center; align-items:center;"><img id="modal-img" style="max-width:100%; max-height:100%;"><span id="no-foto" style="color:white; display:none;">SIN FOTO</span></div><div style="display:flex; justify-content:center; gap:15px; padding:10px; background:#222;"><button onclick="prevPhoto()" style="color:white; border-color:white;">◀</button><span id="photo-c" style="background:#fff; color:#000; padding:2px 10px;">0/0</span><button onclick="nextPhoto()" style="color:white; border-color:white;">▶</button></div><div id="modal-data" style="background:#fff; color:#000; padding:10px; overflow-y:auto; flex:1; font-family:monospace; border:2px inset;"></div><div class="row" style="margin-top:10px;"><button class="btn-big" onclick="generateLitePDF()">🖨️ PDF</button><button class="btn-big" onclick="editFromModal()">✏️ EDITAR</button></div></div></div>
     <canvas id="thumb-canvas" style="display:none;"></canvas>
 
     <script>
-        const DB_NAME = "InvV13_Turbo"; const DB_VER = 1;
+        // --- SERVICE WORKER REGISTRATION (EL GUARDIAN) ---
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').then(reg => {
+                    console.log('SW Registrado: ', reg.scope);
+                }, err => console.log('SW Fallo: ', err));
+            });
+        }
+        window.addEventListener('online', updateOnlineStatus);
+        window.addEventListener('offline', updateOnlineStatus);
+        function updateOnlineStatus() { document.getElementById('offline-badge').style.display = navigator.onLine ? 'none' : 'inline-block'; }
+
+        // --- APP LOGIC ---
+        const DB_NAME = "InvV13_Turbo"; const DB_VER = 1; // MANTENER MISMA BD
         let db, photoQueue=[], editUUID=null, projects=[], currentProject="General";
         let curModalItem=null, curPhotoIdx=0;
 
         window.onload = () => {
-            initDB();
+            initDB(); updateOnlineStatus();
             projects = JSON.parse(localStorage.getItem('projects_v13')) || ['General'];
             currentProject = localStorage.getItem('cur_proj_v13') || 'General';
             loadProjectSelect();
             document.querySelectorAll("#tab-ingreso input, #tab-ingreso textarea").forEach(el => {
-                el.addEventListener("input", () => {
-                   if(!editUUID) localStorage.setItem("draft_v13", JSON.stringify(getFormData()));
-                });
+                el.addEventListener("input", () => { if(!editUUID) localStorage.setItem("draft_v13", JSON.stringify(getFormData())); });
             });
             loadDraft();
         };
 
         function getFormData() { return { id: document.getElementById("inp-id").value, nom: document.getElementById("inp-nombre").value, area: document.getElementById("inp-area").value }; }
         function loadDraft() { const d = JSON.parse(localStorage.getItem("draft_v13")); if(d && !editUUID) { document.getElementById("inp-id").value = d.id||""; document.getElementById("inp-nombre").value = d.nom||""; document.getElementById("inp-area").value = d.area||""; } }
-
-        function initDB() {
-            const r = indexedDB.open(DB_NAME, DB_VER);
-            r.onupgradeneeded = e => { db = e.target.result; const s = db.createObjectStore("items", { keyPath: "uuid" }); s.createIndex("proyecto", "proyecto", { unique: false }); };
-            r.onsuccess = e => { db = e.target.result; renderList(); renderFolders(); updateProgress(); updateStorageManual(); updateSuggestions(); };
-        }
-
-        // --- CORE: Sugerencias & Miniaturas ---
-        function updateSuggestions() {
-            if(!db) return;
-            const tx = db.transaction(["items"], "readonly");
-            tx.objectStore("items").getAll().onsuccess = e => {
-                const sets = { marca: new Set(), modelo: new Set(), area: new Set(), sala: new Set() };
-                e.target.result.forEach(i => {
-                    if(i.marca) sets.marca.add(i.marca.trim()); if(i.modelo) sets.modelo.add(i.modelo.trim());
-                    if(i.area) sets.area.add(i.area.trim()); if(i.sala) sets.sala.add(i.sala.trim());
-                });
-                fillDatalist("dl-marca", sets.marca); fillDatalist("dl-modelo", sets.modelo);
-                fillDatalist("dl-area", sets.area); fillDatalist("dl-sala", sets.sala);
-            };
-        }
+        function initDB() { const r = indexedDB.open(DB_NAME, DB_VER); r.onupgradeneeded = e => { db = e.target.result; const s = db.createObjectStore("items", { keyPath: "uuid" }); s.createIndex("proyecto", "proyecto", { unique: false }); }; r.onsuccess = e => { db = e.target.result; renderList(); renderFolders(); updateProgress(); updateStorageManual(); updateSuggestions(); }; }
+        function updateSuggestions() { if(!db) return; const tx = db.transaction(["items"], "readonly"); tx.objectStore("items").getAll().onsuccess = e => { const sets = { marca: new Set(), modelo: new Set(), area: new Set(), sala: new Set() }; e.target.result.forEach(i => { if(i.marca) sets.marca.add(i.marca.trim()); if(i.modelo) sets.modelo.add(i.modelo.trim()); if(i.area) sets.area.add(i.area.trim()); if(i.sala) sets.sala.add(i.sala.trim()); }); fillDatalist("dl-marca", sets.marca); fillDatalist("dl-modelo", sets.modelo); fillDatalist("dl-area", sets.area); fillDatalist("dl-sala", sets.sala); }; }
         function fillDatalist(id, set) { const dl = document.getElementById(id); dl.innerHTML = ""; [...set].sort().forEach(val => { const opt = document.createElement("option"); opt.value = val; dl.appendChild(opt); }); }
-
-        async function generateThumb(file) {
-            return new Promise(resolve => {
-                const img = new Image(); img.src = URL.createObjectURL(file);
-                img.onload = () => {
-                    const canvas = document.getElementById("thumb-canvas"); const ctx = canvas.getContext("2d");
-                    const scale = 60 / img.width; canvas.width = 60; canvas.height = img.height * scale;
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    canvas.toBlob(blob => resolve(blob), "image/jpeg", 0.7);
-                }
-            });
-        }
-
+        async function generateThumb(file) { return new Promise(resolve => { const img = new Image(); img.src = URL.createObjectURL(file); img.onload = () => { const canvas = document.getElementById("thumb-canvas"); const ctx = canvas.getContext("2d"); const scale = 60 / img.width; canvas.width = 60; canvas.height = img.height * scale; ctx.drawImage(img, 0, 0, canvas.width, canvas.height); canvas.toBlob(blob => resolve(blob), "image/jpeg", 0.7); } }); }
         function showLoading(txt) { document.getElementById("loading-overlay").style.display="flex"; document.getElementById("loading-text").innerText=txt; }
         function hideLoading() { document.getElementById("loading-overlay").style.display="none"; }
-
-        async function saveRecord() {
-            const id = document.getElementById("inp-id").value.trim();
-            const nom = document.getElementById("inp-nombre").value.trim();
-            if(!id || !nom) return alert("Falta ID o Nombre");
-            showLoading("Guardando...");
-            let thumbBlob = null; if(photoQueue.length > 0) thumbBlob = await generateThumb(photoQueue[0]);
-            const item = {
-                uuid: editUUID || crypto.randomUUID(), proyecto: currentProject,
-                id: id, nombre: nom, cant: document.getElementById("inp-cant").value,
-                marca: document.getElementById("inp-marca").value.trim(), modelo: document.getElementById("inp-modelo").value.trim(),
-                serie: document.getElementById("inp-serie").value.trim(), area: document.getElementById("inp-area").value.trim(),
-                sala: document.getElementById("inp-sala").value.trim(), ref: document.getElementById("inp-ref").value.trim(),
-                vis: document.getElementById("inp-vis").value, op: document.getElementById("inp-op").value,
-                notas: document.getElementById("inp-notas").value, fotos: photoQueue.map(f => ({blob:f, name:f.name})),
-                thumb: thumbBlob, fecha: new Date().toLocaleString(), status: "VERIFICADO"
-            };
-            const tx = db.transaction(["items"], "readwrite"); tx.objectStore("items").put(item);
-            tx.oncomplete = () => { hideLoading(); clearForm(); alert("✅ OK"); renderList(); renderFolders(); updateStorageManual(); updateProgress(); updateSuggestions(); localStorage.removeItem("draft_v13"); };
-        }
-
-        // --- OPTIMIZACIÓN LISTADO (DocumentFragment) ---
-        function renderList() {
-            const cont = document.getElementById("list-container");
-            const fArea = document.getElementById("fil-area").value;
-            const fSort = document.getElementById("fil-sort").value;
-            const search = document.getElementById("search-box").value.toLowerCase();
-            cont.innerHTML="Cargando...";
-
-            const tx = db.transaction(["items"], "readonly");
-            tx.objectStore("items").index("proyecto").getAll(currentProject).onsuccess = e => {
-                let items = e.target.result;
-                const areas = [...new Set(items.map(i => (i.area||"").trim()))].sort(); 
-                const sA = document.getElementById("fil-area");
-                // Recargar filtro solo si cambiaron áreas
-                if(sA.options.length <= 1 || areas.length !== sA.options.length-1) {
-                    sA.innerHTML = '<option value="">[Todas Áreas]</option>';
-                    areas.forEach(a => { if(a) sA.add(new Option(a,a)); });
-                    if(fArea) sA.value = fArea; // Mantener selección
-                }
-
-                // Sorting seguro (evita crash con nulls)
-                if(fSort === 'reciente') items.reverse();
-                else items.sort((a,b) => { 
-                    let va=(a.nombre||"").toLowerCase(), vb=(b.nombre||"").toLowerCase(); 
-                    if(fSort==='marca') { va=(a.marca||"").toLowerCase(); vb=(b.marca||"").toLowerCase(); }
-                    if(fSort==='ubic') { va=(a.area||"").toLowerCase(); vb=(b.area||"").toLowerCase(); }
-                    return va.localeCompare(vb); 
-                });
-
-                // Renderizado Turbo
-                cont.innerHTML = "";
-                const fragment = document.createDocumentFragment();
-
-                items.forEach(i => {
-                    // Filtro flexible (ignora espacios para matchear carpetas)
-                    if(fArea && (i.area||"").trim() !== fArea) return;
-                    if(search && !JSON.stringify(i).toLowerCase().includes(search)) return;
-
-                    const row = document.createElement("div"); 
-                    row.className = `item-row ${i.status==='PENDIENTE'?'imported':'verified'}`;
-                    let thumbHtml = i.thumb ? `<img src="${URL.createObjectURL(i.thumb)}" style="width:100%;height:100%;object-fit:cover">` : `<div style="font-size:8px;text-align:center;padding-top:10px;">SIN FOTO</div>`;
-
-                    row.innerHTML = `
-                        <input type="checkbox" class="bulk-check" value="${i.uuid}" onclick="event.stopPropagation();updBulk()">
-                        <div style="width:40px;height:40px;background:#ccc;">${thumbHtml}</div>
-                        <div style="overflow:hidden;"><b>${i.id}</b> ${i.nombre}<br><small>${i.area} - ${i.sala}</small></div>
-                        <button onclick="event.stopPropagation();openModalTech('${i.uuid}')">👁️</button>
-                    `;
-                    fragment.appendChild(row);
-                });
-                cont.appendChild(fragment);
-            }
-        }
-
-        // --- CARPETAS (Fix Espacios) ---
-        function renderFolders() {
-            const g = document.getElementById("folder-grid"); g.innerHTML="";
-            db.transaction(["items"]).objectStore("items").index("proyecto").getAll(currentProject).onsuccess = e => {
-                // Normalización de áreas
-                const areasRaw = e.target.result.map(i => (i.area || "Sin Área").trim());
-                const areasUnique = [...new Set(areasRaw)].filter(a=>a).sort();
-                
-                areasUnique.forEach(a => {
-                    const d = document.createElement("div"); d.className="folder-item";
-                    d.innerHTML=`<div style="font-size:30px">📁</div><div>${a}</div>`;
-                    d.onclick = () => {
-                        document.getElementById("fil-area").value = a; 
-                        renderList(); 
-                        nav("tab-lista");
-                    };
-                    g.appendChild(d);
-                })
-            }
-        }
-
-        // --- UTILS ---
+        async function saveRecord() { const id = document.getElementById("inp-id").value.trim(); const nom = document.getElementById("inp-nombre").value.trim(); if(!id || !nom) return alert("Falta ID o Nombre"); showLoading("Guardando..."); let thumbBlob = null; if(photoQueue.length > 0) thumbBlob = await generateThumb(photoQueue[0]); const item = { uuid: editUUID || crypto.randomUUID(), proyecto: currentProject, id: id, nombre: nom, cant: document.getElementById("inp-cant").value, marca: document.getElementById("inp-marca").value.trim(), modelo: document.getElementById("inp-modelo").value.trim(), serie: document.getElementById("inp-serie").value.trim(), area: document.getElementById("inp-area").value.trim(), sala: document.getElementById("inp-sala").value.trim(), ref: document.getElementById("inp-ref").value.trim(), vis: document.getElementById("inp-vis").value, op: document.getElementById("inp-op").value, notas: document.getElementById("inp-notas").value, fotos: photoQueue.map(f => ({blob:f, name:f.name})), thumb: thumbBlob, fecha: new Date().toLocaleString(), status: "VERIFICADO" }; const tx = db.transaction(["items"], "readwrite"); tx.objectStore("items").put(item); tx.oncomplete = () => { hideLoading(); clearForm(); alert("✅ OK"); renderList(); renderFolders(); updateStorageManual(); updateProgress(); updateSuggestions(); localStorage.removeItem("draft_v13"); }; }
+        function renderList() { const cont = document.getElementById("list-container"); const fArea = document.getElementById("fil-area").value; const fSort = document.getElementById("fil-sort").value; const search = document.getElementById("search-box").value.toLowerCase(); cont.innerHTML="Cargando..."; const tx = db.transaction(["items"], "readonly"); tx.objectStore("items").index("proyecto").getAll(currentProject).onsuccess = e => { let items = e.target.result; const areas = [...new Set(items.map(i => (i.area||"").trim()))].sort(); const sA = document.getElementById("fil-area"); if(sA.options.length <= 1 || areas.length !== sA.options.length-1) { sA.innerHTML = '<option value="">[Áreas]</option>'; areas.forEach(a => { if(a) sA.add(new Option(a,a)); }); if(fArea) sA.value = fArea; } if(fSort === 'reciente') items.reverse(); else items.sort((a,b) => { let va=(a.nombre||"").toLowerCase(), vb=(b.nombre||"").toLowerCase(); if(fSort==='marca') { va=(a.marca||"").toLowerCase(); vb=(b.marca||"").toLowerCase(); } if(fSort==='ubic') { va=(a.area||"").toLowerCase(); vb=(b.area||"").toLowerCase(); } return va.localeCompare(vb); }); cont.innerHTML = ""; const fragment = document.createDocumentFragment(); items.forEach(i => { if(fArea && (i.area||"").trim() !== fArea) return; if(search && !JSON.stringify(i).toLowerCase().includes(search)) return; const row = document.createElement("div"); row.className = `item-row ${i.status==='PENDIENTE'?'imported':'verified'}`; let thumbHtml = i.thumb ? `<img src="${URL.createObjectURL(i.thumb)}" style="width:100%;height:100%;object-fit:cover">` : `<div style="font-size:8px;text-align:center;padding-top:10px;">SIN FOTO</div>`; row.innerHTML = `<input type="checkbox" class="bulk-check" value="${i.uuid}" onclick="event.stopPropagation();updBulk()"><div style="width:40px;height:40px;background:#ccc;">${thumbHtml}</div><div style="overflow:hidden;"><b>${i.id}</b> ${i.nombre}<br><small>${i.area}</small></div><button onclick="event.stopPropagation();openModalTech('${i.uuid}')">👁️</button>`; fragment.appendChild(row); }); cont.appendChild(fragment); } }
+        function renderFolders() { const g = document.getElementById("folder-grid"); g.innerHTML=""; db.transaction(["items"]).objectStore("items").index("proyecto").getAll(currentProject).onsuccess = e => { const areasRaw = e.target.result.map(i => (i.area || "Sin Área").trim()); const areasUnique = [...new Set(areasRaw)].filter(a=>a).sort(); areasUnique.forEach(a => { const d = document.createElement("div"); d.className="folder-item"; d.innerHTML=`<div style="font-size:30px">📁</div><div>${a}</div>`; d.onclick = () => { document.getElementById("fil-area").value = a; renderList(); nav("tab-lista"); }; g.appendChild(d); }) } }
         function loadProjectSelect() { const s = document.getElementById("project-select"); s.innerHTML=""; projects.forEach(p => s.add(new Option(p,p))); s.value = currentProject; }
         function switchProject() { currentProject = document.getElementById("project-select").value; localStorage.setItem('cur_proj_v13', currentProject); renderList(); renderFolders(); updateProgress(); updateSuggestions(); }
         function addProject() { const n = prompt("Nombre Nuevo:"); if(n && !projects.includes(n)) { projects.push(n); localStorage.setItem('projects_v13', JSON.stringify(projects)); currentProject=n; loadProjectSelect(); switchProject(); } }
