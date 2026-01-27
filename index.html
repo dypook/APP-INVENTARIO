@@ -7,33 +7,36 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Inventarios">
     
-    <title>Inventarios V15 (PWA)</title>
+    <title>Inventarios V16 (PWA)</title>
     
     <link rel="manifest" href="./manifest.json">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     
     <style>
-        /* TEMA STANDARD */
-        :root { --bg: #008080; --win-gray: #c0c0c0; --text: #000; --light: #fff; --shadow: #808080; --blue: #000080; --input-bg: #fff; --verif-bg: #e0ffe0; --pend-bg: #e0e0e0; --header-text: #fff; }
-        /* TEMA OLED */
-        body.oled-mode { --bg: #000000; --win-gray: #000000; --text: #ffffff; --light: #ffffff; --shadow: #ffffff; --blue: #000000; --input-bg: #000000; --verif-bg: #002200; --pend-bg: #222222; --header-text: #fff; }
-        body.oled-mode input, body.oled-mode select, body.oled-mode textarea { color: #fff; border: 1px solid #fff; background: #000; }
-        body.oled-mode .win-box { border: 1px solid #fff; }
-        body.oled-mode button { background: #000; color: #fff; border: 1px solid #fff; }
-        body.oled-mode .section-header { background: #000 !important; color: #fff !important; border-bottom: 1px solid #fff; }
-        body.oled-mode .header-bar { border-bottom: 1px solid #fff; }
-        body.oled-mode .tab.active { border-bottom: 2px solid #000; }
+        /* TEMA 1: STANDARD (Verde/Gris) */
+        :root { --bg: #008080; --win-gray: #c0c0c0; --text: #000; --light: #fff; --shadow: #808080; --blue: #000080; --input-bg: #fff; --verif-bg: #e0ffe0; --pend-bg: #e0e0e0; --header-text: #fff; --btn-del: #ffcccc; }
+        
+        /* TEMA 2: OLED (Negro Puro) */
+        body.oled-mode { --bg: #000000; --win-gray: #000000; --text: #ffffff; --light: #ffffff; --shadow: #444444; --blue: #111111; --input-bg: #000000; --verif-bg: #003300; --pend-bg: #222222; --header-text: #fff; --btn-del: #550000; }
+        body.oled-mode input, body.oled-mode select, body.oled-mode textarea { border: 1px solid #555; }
+        body.oled-mode .win-box { border: 1px solid #555; }
+        
+        /* TEMA 3: WHITE (Blanco Puro/Papel) */
+        body.white-mode { --bg: #f2f2f2; --win-gray: #ffffff; --text: #000000; --light: #dddddd; --shadow: #999999; --blue: #333333; --input-bg: #ffffff; --verif-bg: #f0fff0; --pend-bg: #f9f9f9; --header-text: #fff; --btn-del: #ffeaea; }
+        body.white-mode .win-box { border: 1px solid #ccc; box-shadow: 2px 2px 5px rgba(0,0,0,0.05); }
+        body.white-mode button { background: #f8f8f8; border: 1px solid #ccc; }
 
+        /* ESTILOS GENERALES */
         body { background-color: var(--bg); font-family: "Segoe UI", sans-serif; margin: 0; padding: 5px; height: 100vh; display: flex; flex-direction: column; box-sizing: border-box; font-size: 13px; color: var(--text); overflow: hidden; user-select: none; -webkit-user-select: none; }
         .win-box { background-color: var(--win-gray); border: 2px solid; border-color: var(--light) var(--shadow) var(--shadow) var(--light); padding: 4px; margin-bottom: 8px; }
-        .app-title { text-align: center; font-weight: 900; font-size: 1.2em; text-transform: uppercase; margin-bottom: 5px; color: white; text-shadow: 1px 1px 0 #000; letter-spacing: 1px; }
+        .app-title { text-align: center; font-weight: 900; font-size: 1.2em; text-transform: uppercase; margin-bottom: 5px; color: var(--text); letter-spacing: 1px; }
         .header-bar { background: var(--blue); color: var(--header-text); padding: 5px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
         .section-header { background: var(--shadow); color: white; padding: 2px 5px; font-weight: bold; margin-bottom: 4px; }
         .row { display: flex; gap: 5px; margin-bottom: 5px; }
         .col { flex: 1; display: flex; flex-direction: column; }
-        input, select, textarea { border: 2px inset var(--shadow); background: var(--input-bg); padding: 5px; box-sizing: border-box; font-family: inherit; border-radius: 0; width: 100%; user-select: text; -webkit-user-select: text; }
-        button { background: var(--win-gray); border: 2px outset var(--light); padding: 5px 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; text-transform: uppercase; font-size: 12px; }
+        input, select, textarea { border: 2px inset var(--shadow); background: var(--input-bg); padding: 5px; box-sizing: border-box; font-family: inherit; border-radius: 0; width: 100%; color: var(--text); user-select: text; -webkit-user-select: text; }
+        button { background: var(--win-gray); border: 2px outset var(--light); padding: 5px 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; text-transform: uppercase; font-size: 12px; color: var(--text); }
         button:active { border-style: inset; padding: 6px 9px 4px 11px; }
         .btn-big { width: 100%; padding: 12px; margin-top: 5px; font-size: 14px; }
         .btn-top { font-size: 11px; padding: 3px 8px; background: #ddd; color: black; border: 1px solid white; }
@@ -44,7 +47,7 @@
         label { font-weight: bold; font-size: 0.8em; margin-bottom: 2px; display: block; opacity: 0.8; }
         .input-short { width: 100% !important; max-width: 150px; } .input-mini { width: 60px !important; }
         .tabs { display: flex; gap: 4px; margin-bottom: -2px; z-index: 10; padding-left: 2px; }
-        .tab { background: var(--win-gray); border: 2px solid var(--light); border-bottom: none; border-right-color: var(--shadow); padding: 8px 15px; cursor: pointer; border-radius: 6px 6px 0 0; opacity: 0.7; }
+        .tab { background: var(--win-gray); border: 2px solid var(--light); border-bottom: none; border-right-color: var(--shadow); padding: 8px 15px; cursor: pointer; border-radius: 6px 6px 0 0; opacity: 0.7; color: var(--text); }
         .tab.active { opacity: 1; font-weight: bold; padding-bottom: 10px; z-index: 11; border-bottom: 2px solid var(--win-gray); }
         .panel { display: none; flex-grow: 1; overflow-y: auto; padding: 10px; border: 2px solid var(--light); border-color: var(--light) var(--shadow) var(--shadow) var(--light); background: var(--win-gray); -webkit-overflow-scrolling: touch; }
         .panel.active { display: block; }
@@ -62,20 +65,31 @@
         .folder-item:hover { border: 1px dotted var(--text); background: rgba(255,255,255,0.1); }
         #loading-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:3000; display:none; flex-direction:column; justify-content:center; align-items:center; color:white; }
         #offline-badge { display:none; background:red; color:white; padding:2px 5px; font-size:10px; border-radius:4px; margin-right:5px; }
+        
+        /* ESTILOS DE IMPRESIÓN (SOLUCIÓN AL BUG) */
+        #printable-area { display: none; }
+        @media print {
+            body * { visibility: hidden; }
+            #printable-area, #printable-area * { visibility: visible; }
+            #printable-area { display: block; position: absolute; left: 0; top: 0; width: 100%; }
+            .modal-overlay { display: none !important; }
+        }
     </style>
 </head>
 <body>
     <div id="loading-overlay"><div style="font-size:3em;">⏳</div><div id="loading-text" style="margin-top:10px;">Procesando...</div></div>
+    <div id="printable-area"></div>
+
     <datalist id="dl-marca"></datalist><datalist id="dl-modelo"></datalist><datalist id="dl-area"></datalist><datalist id="dl-sala"></datalist>
 
     <div class="app-title">INVENTARIOS</div>
     <div class="win-box" style="padding: 2px;">
         <div class="header-bar">
-            <span style="display:flex;align-items:center;"><span id="offline-badge">OFFLINE</span> 📦 V15</span>
+            <span style="display:flex;align-items:center;"><span id="offline-badge">OFFLINE</span> 📦 V16</span>
             <span style="display:flex; gap:5px; align-items:center;">
                 <span id="storage-monitor" class="storage-pill">...</span>
                 <span id="progress-text" style="font-weight:900;">0%</span>
-                <button onclick="toggleOLED()" title="OLED" style="padding:0 6px;">☀</button>
+                <button onclick="cycleTheme()" title="Tema" style="padding:0 6px;">☀</button>
                 <button class="btn-top" onclick="openModal('modal-import')">📥</button>
                 <button class="btn-top" onclick="openModal('modal-export')">📦</button>
             </span>
@@ -138,32 +152,53 @@
     
     <div id="modal-import" class="modal-overlay" onclick="closeModal(event)"><div class="modal-win"><div class="header-bar">📥 IMPORTAR <button onclick="document.getElementById('modal-import').style.display='none'">X</button></div><div style="padding:15px;"><button onclick="downloadTemplate()">📄 Bajar Plantilla</button><hr><input type="file" id="csv-input" accept=".csv"><br><br><button class="btn-big" onclick="processImport()">PROCESAR</button></div></div></div>
     <div id="modal-export" class="modal-overlay" onclick="closeModal(event)"><div class="modal-win"><div class="header-bar">📦 EXPORTAR <button onclick="document.getElementById('modal-export').style.display='none'">X</button></div><div id="export-content" style="padding:15px; overflow-y:auto;"><button class="btn-big" onclick="analyzeExport()">🔄 CALCULAR</button><div id="export-options" style="display:none; margin-top:15px;"></div></div><hr><button style="color:red; margin:5px;" onclick="nukeDB()">⚠️ BORRAR BD</button></div></div>
-    <div id="tech-sheet" class="modal-overlay" onclick="closeModal(event)"><div class="modal-win"><div class="header-bar">FICHA <button onclick="document.getElementById('tech-sheet').style.display='none'">X</button></div><div style="background:#000; height:250px; display:flex; justify-content:center; align-items:center;"><img id="modal-img" style="max-width:100%; max-height:100%;"><span id="no-foto" style="color:white; display:none;">SIN FOTO</span></div><div style="display:flex; justify-content:center; gap:15px; padding:10px; background:#222;"><button onclick="prevPhoto()" style="color:white; border-color:white;">◀</button><span id="photo-c" style="background:#fff; color:#000; padding:2px 10px;">0/0</span><button onclick="nextPhoto()" style="color:white; border-color:white;">▶</button></div><div id="modal-data" style="background:#fff; color:#000; padding:10px; overflow-y:auto; flex:1; font-family:monospace; border:2px inset;"></div><div class="row" style="margin-top:10px;"><button class="btn-big" onclick="generateLitePDF()">🖨️ PDF</button><button class="btn-big" onclick="editFromModal()">✏️ EDITAR</button></div></div></div>
+    
+    <div id="tech-sheet" class="modal-overlay" onclick="closeModal(event)">
+        <div class="modal-win">
+            <div class="header-bar">FICHA <button onclick="document.getElementById('tech-sheet').style.display='none'">X</button></div>
+            <div style="background:#000; height:250px; display:flex; justify-content:center; align-items:center; position:relative;">
+                <img id="modal-img" style="max-width:100%; max-height:100%; display:none;">
+                <span id="no-foto" style="color:white; display:none;">SIN FOTO</span>
+            </div>
+            <div style="display:flex; justify-content:center; gap:15px; padding:10px; background:#222;">
+                <button onclick="prevPhoto()" style="color:white; border-color:white;">◀</button>
+                <span id="photo-c" style="background:#fff; color:#000; padding:2px 10px;">0/0</span>
+                <button onclick="nextPhoto()" style="color:white; border-color:white;">▶</button>
+            </div>
+            <div id="modal-data" style="background:var(--input-bg); color:var(--text); padding:10px; overflow-y:auto; flex:1; font-family:monospace; border:2px inset;"></div>
+            <div class="row" style="margin-top:10px;">
+                <button class="btn-big" style="flex:1" onclick="generateLitePDF()">🖨️ PDF</button>
+                <button class="btn-big" style="flex:1" onclick="editFromModal()">✏️ EDITAR</button>
+            </div>
+        </div>
+    </div>
+    
     <canvas id="thumb-canvas" style="display:none;"></canvas>
 
     <script>
-        // --- SERVICE WORKER REGISTRATION (EL GUARDIAN) ---
+        // --- SERVICE WORKER ---
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js').then(reg => {
-                    console.log('SW Registrado: ', reg.scope);
-                }, err => console.log('SW Fallo: ', err));
-            });
+            window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js'); });
         }
         window.addEventListener('online', updateOnlineStatus);
         window.addEventListener('offline', updateOnlineStatus);
         function updateOnlineStatus() { document.getElementById('offline-badge').style.display = navigator.onLine ? 'none' : 'inline-block'; }
 
         // --- APP LOGIC ---
-        const DB_NAME = "InvV13_Turbo"; const DB_VER = 1; // MANTENER MISMA BD
+        const DB_NAME = "InvV13_Turbo"; const DB_VER = 1; 
         let db, photoQueue=[], editUUID=null, projects=[], currentProject="General";
         let curModalItem=null, curPhotoIdx=0;
+        let themeMode = 0; // 0=Std, 1=OLED, 2=White
 
         window.onload = () => {
             initDB(); updateOnlineStatus();
             projects = JSON.parse(localStorage.getItem('projects_v13')) || ['General'];
             currentProject = localStorage.getItem('cur_proj_v13') || 'General';
             loadProjectSelect();
+            // Cargar Tema Guardado
+            themeMode = parseInt(localStorage.getItem('theme_v16') || "0");
+            applyTheme();
+            
             document.querySelectorAll("#tab-ingreso input, #tab-ingreso textarea").forEach(el => {
                 el.addEventListener("input", () => { if(!editUUID) localStorage.setItem("draft_v13", JSON.stringify(getFormData())); });
             });
@@ -178,9 +213,73 @@
         async function generateThumb(file) { return new Promise(resolve => { const img = new Image(); img.src = URL.createObjectURL(file); img.onload = () => { const canvas = document.getElementById("thumb-canvas"); const ctx = canvas.getContext("2d"); const scale = 60 / img.width; canvas.width = 60; canvas.height = img.height * scale; ctx.drawImage(img, 0, 0, canvas.width, canvas.height); canvas.toBlob(blob => resolve(blob), "image/jpeg", 0.7); } }); }
         function showLoading(txt) { document.getElementById("loading-overlay").style.display="flex"; document.getElementById("loading-text").innerText=txt; }
         function hideLoading() { document.getElementById("loading-overlay").style.display="none"; }
+        
+        // --- TEMAS (Ciclo: Std -> OLED -> White) ---
+        function cycleTheme() {
+            themeMode = (themeMode + 1) % 3;
+            localStorage.setItem('theme_v16', themeMode);
+            applyTheme();
+        }
+        function applyTheme() {
+            document.body.classList.remove("oled-mode", "white-mode");
+            if(themeMode === 1) document.body.classList.add("oled-mode");
+            if(themeMode === 2) document.body.classList.add("white-mode");
+        }
+
         async function saveRecord() { const id = document.getElementById("inp-id").value.trim(); const nom = document.getElementById("inp-nombre").value.trim(); if(!id || !nom) return alert("Falta ID o Nombre"); showLoading("Guardando..."); let thumbBlob = null; if(photoQueue.length > 0) thumbBlob = await generateThumb(photoQueue[0]); const item = { uuid: editUUID || crypto.randomUUID(), proyecto: currentProject, id: id, nombre: nom, cant: document.getElementById("inp-cant").value, marca: document.getElementById("inp-marca").value.trim(), modelo: document.getElementById("inp-modelo").value.trim(), serie: document.getElementById("inp-serie").value.trim(), area: document.getElementById("inp-area").value.trim(), sala: document.getElementById("inp-sala").value.trim(), ref: document.getElementById("inp-ref").value.trim(), vis: document.getElementById("inp-vis").value, op: document.getElementById("inp-op").value, notas: document.getElementById("inp-notas").value, fotos: photoQueue.map(f => ({blob:f, name:f.name})), thumb: thumbBlob, fecha: new Date().toLocaleString(), status: "VERIFICADO" }; const tx = db.transaction(["items"], "readwrite"); tx.objectStore("items").put(item); tx.oncomplete = () => { hideLoading(); clearForm(); alert("✅ OK"); renderList(); renderFolders(); updateStorageManual(); updateProgress(); updateSuggestions(); localStorage.removeItem("draft_v13"); }; }
-        function renderList() { const cont = document.getElementById("list-container"); const fArea = document.getElementById("fil-area").value; const fSort = document.getElementById("fil-sort").value; const search = document.getElementById("search-box").value.toLowerCase(); cont.innerHTML="Cargando..."; const tx = db.transaction(["items"], "readonly"); tx.objectStore("items").index("proyecto").getAll(currentProject).onsuccess = e => { let items = e.target.result; const areas = [...new Set(items.map(i => (i.area||"").trim()))].sort(); const sA = document.getElementById("fil-area"); if(sA.options.length <= 1 || areas.length !== sA.options.length-1) { sA.innerHTML = '<option value="">[Áreas]</option>'; areas.forEach(a => { if(a) sA.add(new Option(a,a)); }); if(fArea) sA.value = fArea; } if(fSort === 'reciente') items.reverse(); else items.sort((a,b) => { let va=(a.nombre||"").toLowerCase(), vb=(b.nombre||"").toLowerCase(); if(fSort==='marca') { va=(a.marca||"").toLowerCase(); vb=(b.marca||"").toLowerCase(); } if(fSort==='ubic') { va=(a.area||"").toLowerCase(); vb=(b.area||"").toLowerCase(); } return va.localeCompare(vb); }); cont.innerHTML = ""; const fragment = document.createDocumentFragment(); items.forEach(i => { if(fArea && (i.area||"").trim() !== fArea) return; if(search && !JSON.stringify(i).toLowerCase().includes(search)) return; const row = document.createElement("div"); row.className = `item-row ${i.status==='PENDIENTE'?'imported':'verified'}`; let thumbHtml = i.thumb ? `<img src="${URL.createObjectURL(i.thumb)}" style="width:100%;height:100%;object-fit:cover">` : `<div style="font-size:8px;text-align:center;padding-top:10px;">SIN FOTO</div>`; row.innerHTML = `<input type="checkbox" class="bulk-check" value="${i.uuid}" onclick="event.stopPropagation();updBulk()"><div style="width:40px;height:40px;background:#ccc;">${thumbHtml}</div><div style="overflow:hidden; flex-grow:1;"><b>${i.id}</b> ${i.nombre}<br><small>${i.area}</small></div><div style="display:flex;gap:5px;"><button onclick="event.stopPropagation();deleteItem('${i.uuid}')" style="background:#ffcccc;color:red;border-color:red;padding:5px;">🗑️</button><button onclick="event.stopPropagation();openModalTech('${i.uuid}')">👁️</button></div>`; fragment.appendChild(row); }); cont.appendChild(fragment); } }
-        function deleteItem(uuid) { if(!confirm("¿Borrar este ítem? No se puede deshacer.")) return; const tx = db.transaction(["items"], "readwrite"); tx.objectStore("items").delete(uuid); tx.oncomplete = () => { renderList(); renderFolders(); updateProgress(); updateStorageManual(); updateSuggestions(); }; }
+        
+        function renderList() { 
+            const cont = document.getElementById("list-container"); 
+            const fArea = document.getElementById("fil-area").value; 
+            const fSort = document.getElementById("fil-sort").value; 
+            const search = document.getElementById("search-box").value.toLowerCase(); 
+            cont.innerHTML="Cargando..."; 
+            const tx = db.transaction(["items"], "readonly"); 
+            tx.objectStore("items").index("proyecto").getAll(currentProject).onsuccess = e => { 
+                let items = e.target.result; 
+                // ... logic de filtros ...
+                const areas = [...new Set(items.map(i => (i.area||"").trim()))].sort();
+                const sA = document.getElementById("fil-area");
+                if(sA.options.length <= 1 || areas.length !== sA.options.length-1) {
+                    sA.innerHTML = '<option value="">[Áreas]</option>';
+                    areas.forEach(a => { if(a) sA.add(new Option(a,a)); });
+                    if(fArea) sA.value = fArea;
+                }
+
+                if(fSort === 'reciente') items.reverse(); 
+                else items.sort((a,b) => { 
+                    let va=(a.nombre||"").toLowerCase(), vb=(b.nombre||"").toLowerCase(); 
+                    if(fSort==='marca') { va=(a.marca||"").toLowerCase(); vb=(b.marca||"").toLowerCase(); } 
+                    if(fSort==='ubic') { va=(a.area||"").toLowerCase(); vb=(b.area||"").toLowerCase(); } 
+                    return va.localeCompare(vb); 
+                }); 
+                
+                cont.innerHTML = ""; 
+                const fragment = document.createDocumentFragment(); 
+                items.forEach(i => { 
+                    if(fArea && (i.area||"").trim() !== fArea) return; 
+                    if(search && !JSON.stringify(i).toLowerCase().includes(search)) return; 
+                    const row = document.createElement("div"); 
+                    row.className = `item-row ${i.status==='PENDIENTE'?'imported':'verified'}`; 
+                    let thumbHtml = i.thumb ? `<img src="${URL.createObjectURL(i.thumb)}" style="width:100%;height:100%;object-fit:cover">` : `<div style="font-size:8px;text-align:center;padding-top:10px;">SIN FOTO</div>`; 
+                    
+                    // AQUI ESTA EL BOTON DE BORRAR (RED)
+                    row.innerHTML = `
+                        <input type="checkbox" class="bulk-check" value="${i.uuid}" onclick="event.stopPropagation();updBulk()">
+                        <div style="width:40px;height:40px;background:#ccc;">${thumbHtml}</div>
+                        <div style="overflow:hidden; flex-grow:1;"><b>${i.id}</b> ${i.nombre}<br><small>${i.area}</small></div>
+                        <div style="display:flex; gap:8px;">
+                            <button onclick="event.stopPropagation();deleteItem('${i.uuid}')" style="background:var(--btn-del); color:red; border-color:red; font-size:16px; padding:5px 10px;">🗑️</button>
+                            <button onclick="event.stopPropagation();openModalTech('${i.uuid}')" style="padding:5px 10px;">👁️</button>
+                        </div>
+                    `; 
+                    fragment.appendChild(row); 
+                }); 
+                cont.appendChild(fragment); 
+            } 
+        }
+
+        function deleteItem(uuid) { if(!confirm("¿Borrar definitivamente?")) return; const tx = db.transaction(["items"], "readwrite"); tx.objectStore("items").delete(uuid); tx.oncomplete = () => { renderList(); renderFolders(); updateProgress(); updateStorageManual(); updateSuggestions(); }; }
         function renderFolders() { const g = document.getElementById("folder-grid"); g.innerHTML=""; db.transaction(["items"]).objectStore("items").index("proyecto").getAll(currentProject).onsuccess = e => { const areasRaw = e.target.result.map(i => (i.area || "Sin Área").trim()); const areasUnique = [...new Set(areasRaw)].filter(a=>a).sort(); areasUnique.forEach(a => { const d = document.createElement("div"); d.className="folder-item"; d.innerHTML=`<div style="font-size:30px">📁</div><div>${a}</div>`; d.onclick = () => { document.getElementById("fil-area").value = a; renderList(); nav("tab-lista"); }; g.appendChild(d); }) } }
         function loadProjectSelect() { const s = document.getElementById("project-select"); s.innerHTML=""; projects.forEach(p => s.add(new Option(p,p))); s.value = currentProject; }
         function switchProject() { currentProject = document.getElementById("project-select").value; localStorage.setItem('cur_proj_v13', currentProject); renderList(); renderFolders(); updateProgress(); updateSuggestions(); }
@@ -194,7 +293,7 @@
         function nav(id) { document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active")); document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active")); document.getElementById(id).classList.add("active"); event.target.classList.add("active"); }
         function openModal(id){ document.getElementById(id).style.display="flex"; if(id==='modal-export') analyzeExport(); }
         function closeModal(e){ if(e.target.classList.contains("modal-overlay")) e.target.style.display="none"; }
-        function toggleOLED() { document.body.classList.toggle("oled-mode"); }
+        
         function checkDup(f,v) { if(!v || editUUID) return; db.transaction(["items"]).objectStore("items").getAll().onsuccess=e=>{ const ex = e.target.result.some(i=>i[f]===v && i.proyecto===currentProject); document.getElementById("dup-msg").style.display=ex?"block":"none"; } }
         function showModalPhoto() { const img=document.getElementById("modal-img"), lbl=document.getElementById("no-foto"); if(curModalItem.fotos.length){ img.style.display="block"; lbl.style.display="none"; img.src=URL.createObjectURL(curModalItem.fotos[curPhotoIdx].blob); document.getElementById("photo-c").innerText=`${curPhotoIdx+1}/${curModalItem.fotos.length}`; } else { img.style.display="none"; lbl.style.display="block"; } }
         function nextPhoto(){if(curModalItem.fotos.length){curPhotoIdx=(curPhotoIdx+1)%curModalItem.fotos.length;showModalPhoto()}}
@@ -210,8 +309,58 @@
         function analyzeExport() { const div = document.getElementById("export-options"); div.innerHTML = "Calculando..."; div.style.display="block"; db.transaction(["items"]).objectStore("items").index("proyecto").getAll(currentProject).onsuccess = e => { const items = e.target.result; let totalSize = 0; items.forEach(i=>i.fotos.forEach(f=>totalSize+=f.blob.size)); const mb = (totalSize/1024/1024).toFixed(1); div.innerHTML = `<h4>Peso Total: ${mb} MB</h4>`; const btnCsv = document.createElement("button"); btnCsv.className="btn-big"; btnCsv.innerHTML = "📄 DESCARGAR SOLO CSV"; btnCsv.onclick = () => { let csv = "\uFEFFID;NOMBRE;CANT;MARCA;MODELO;SERIE;AREA;SALA;REF;VIS;OP;NOTAS\n"; items.forEach(i => { csv += `"${i.id}";"${i.nombre}";"${i.cant}";"${i.marca}";"${i.modelo}";"${i.serie}";"${i.area}";"${i.sala}";"${i.ref}";"${i.vis}";"${i.op}";"${i.notas}"\n`; }); saveAs(new Blob([csv], {type:"text/csv;charset=utf-8"}), `DATA_${currentProject}.csv`); }; div.appendChild(btnCsv); div.appendChild(document.createElement("hr")); const btnAll = document.createElement("button"); btnAll.className="btn-big"; btnAll.innerHTML = "📦 EXPORTAR ZIP"; if(totalSize>500*1024*1024) btnAll.style.borderColor="red"; btnAll.onclick = () => downloadBatch(items, "COMPLETO"); div.appendChild(btnAll); let batch=[], bSize=0, bNum=1; items.forEach(i => { let iSize=0; i.fotos.forEach(f=>iSize+=f.blob.size); if(bSize+iSize > 400*1024*1024 && batch.length>0) { createPartBtn(batch, bNum++); batch=[]; bSize=0; } batch.push(i); bSize+=iSize; }); if(batch.length>0) createPartBtn(batch, bNum); } }
         function createPartBtn(list, num) { const btn = document.createElement("button"); btn.className="btn-big"; btn.innerText = `📦 FOTOS PARTE ${num} (${list.length} items)`; btn.onclick = () => downloadBatch(list, `PARTE_${num}`); document.getElementById("export-options").appendChild(btn); }
         async function downloadBatch(list, suffix) { const zip = new JSZip(); let csv = "\uFEFFID;NOMBRE;CANT;MARCA;MODELO;SERIE;AREA;SALA;REF;VIS;OP;NOTAS\n"; list.forEach(i => { csv += `"${i.id}";"${i.nombre}";"${i.cant}";"${i.marca}";"${i.modelo}";"${i.serie}";"${i.area}";"${i.sala}";"${i.ref}";"${i.vis}";"${i.op}";"${i.notas}"\n`; if(i.fotos.length) { const fld = zip.folder(`[${i.id}]_${i.nombre.replace(/\W/g,'')}`); i.fotos.forEach((f,x) => fld.file(`${x}.jpg`, f.blob)); } }); zip.file(`DATA_${suffix}.csv`, csv); saveAs(await zip.generateAsync({type:"blob"}), `INV_${suffix}.zip`); }
-        async function generateLitePDF() { const statusBtn = event.target; const originalText = statusBtn.innerText; statusBtn.innerText = "⏳ Comprimiendo..."; const compressImg = async (blob) => { return new Promise(resolve => { const img = new Image(); img.src = URL.createObjectURL(blob); img.onload = () => { const canvas = document.getElementById("thumb-canvas"); const ctx = canvas.getContext("2d"); const MAX_W = 800; const scale = MAX_W / img.width; canvas.width = MAX_W; canvas.height = img.height * scale; ctx.drawImage(img, 0, 0, canvas.width, canvas.height); resolve(canvas.toDataURL("image/jpeg", 0.4)); } }); }; let imgTags = ""; for (const photo of curModalItem.fotos) { const base64 = await compressImg(photo.blob); imgTags += `<div style="display:inline-block; width:30%; margin:3px; vertical-align:top;"><img src="${base64}" style="width:100%; border:1px solid #ccc;"></div>`; } const w = window.open('', '_blank'); w.document.write(`<html><head><title>${curModalItem.id}</title><style>body{font-family:sans-serif; font-size:12px;} table{width:100%; border-collapse:collapse; margin-bottom:5px;} td{border:1px solid #999; padding:4px;} th{background:#eee; text-align:left; border:1px solid #999; padding:4px;}</style></head><body><h3 style="margin:5px 0;">FICHA TÉCNICA: ${curModalItem.nombre}</h3><table><tr><th>ID / CÓDIGO</th><td>${curModalItem.id}</td><th>FECHA</th><td>${curModalItem.fecha}</td></tr><tr><th>MARCA</th><td>${curModalItem.marca}</td><th>MODELO</th><td>${curModalItem.modelo}</td></tr><tr><th>SERIE</th><td>${curModalItem.serie}</td><th>CANTIDAD</th><td>${curModalItem.cant}</td></tr><tr><th>UBICACIÓN</th><td>${curModalItem.area} - ${curModalItem.sala}</td><th>REF. EXACTA</th><td>${curModalItem.ref}</td></tr><tr><th>ESTADO VISUAL</th><td>${curModalItem.vis}</td><th>OPERATIVO</th><td>${curModalItem.op}</td></tr><tr><th colspan="4">NOTAS</th></tr><tr><td colspan="4" style="height:40px; vertical-align:top;">${curModalItem.notas}</td></tr></table><div style="text-align:center;">${imgTags}</div></body></html>`); w.document.close(); statusBtn.innerText = originalText; setTimeout(() => w.print(), 500); }
         function nukeDB(){if(confirm("¿BORRAR TODO?")){indexedDB.deleteDatabase(DB_NAME);location.reload()}}
+
+        // --- PDF GENERATOR (VERSIÓN CORREGIDA PARA IOS) ---
+        async function generateLitePDF() {
+            const statusBtn = event.target;
+            const originalText = statusBtn.innerText;
+            statusBtn.innerText = "⏳ Generando...";
+            
+            // 1. Preparar imágenes comprimidas
+            const compressImg = async (blob) => { 
+                return new Promise(resolve => { 
+                    const img = new Image(); img.src = URL.createObjectURL(blob); 
+                    img.onload = () => { 
+                        const canvas = document.getElementById("thumb-canvas"); 
+                        const ctx = canvas.getContext("2d"); 
+                        const MAX_W = 800; const scale = MAX_W / img.width; 
+                        canvas.width = MAX_W; canvas.height = img.height * scale; 
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height); 
+                        resolve(canvas.toDataURL("image/jpeg", 0.4)); 
+                    } 
+                }); 
+            };
+            
+            let imgTags = "";
+            for (const photo of curModalItem.fotos) { 
+                const base64 = await compressImg(photo.blob); 
+                imgTags += `<div style="display:inline-block; width:30%; margin:3px; vertical-align:top;"><img src="${base64}" style="width:100%; border:1px solid #ccc;"></div>`; 
+            }
+
+            // 2. Crear HTML de impresión
+            const html = `
+                <div style="padding:20px; font-family:sans-serif; background:white; color:black;">
+                    <h3 style="margin:5px 0;">FICHA TÉCNICA: ${curModalItem.nombre}</h3>
+                    <table style="width:100%; border-collapse:collapse; margin-bottom:10px; font-size:12px;">
+                        <tr><td style="border:1px solid #999; padding:4px; font-weight:bold; background:#eee;">ID</td><td style="border:1px solid #999; padding:4px;">${curModalItem.id}</td></tr>
+                        <tr><td style="border:1px solid #999; padding:4px; font-weight:bold; background:#eee;">FECHA</td><td style="border:1px solid #999; padding:4px;">${curModalItem.fecha}</td></tr>
+                        <tr><td style="border:1px solid #999; padding:4px; font-weight:bold; background:#eee;">UBICACIÓN</td><td style="border:1px solid #999; padding:4px;">${curModalItem.area} - ${curModalItem.sala}</td></tr>
+                        <tr><td style="border:1px solid #999; padding:4px; font-weight:bold; background:#eee;">MARCA/MOD</td><td style="border:1px solid #999; padding:4px;">${curModalItem.marca} / ${curModalItem.modelo}</td></tr>
+                        <tr><td style="border:1px solid #999; padding:4px; font-weight:bold; background:#eee;">NOTAS</td><td style="border:1px solid #999; padding:4px;">${curModalItem.notas}</td></tr>
+                    </table>
+                    <div style="text-align:center;">${imgTags}</div>
+                </div>
+            `;
+
+            // 3. Inyectar en zona invisible y lanzar diálogo del sistema
+            document.getElementById('printable-area').innerHTML = html;
+            
+            statusBtn.innerText = originalText;
+            
+            // 4. Imprimir (iOS ahora imprimirá SOLO el div gracias al CSS @media print)
+            window.print();
+        }
     </script>
 </body>
 </html>
