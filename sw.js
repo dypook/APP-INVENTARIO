@@ -1,4 +1,4 @@
-const CACHE_NAME = 'inv-v14-offline';
+const CACHE_NAME = 'inv-v15-offline';
 const ASSETS = [
   './',
   './index.html',
